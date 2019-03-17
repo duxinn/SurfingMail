@@ -5,10 +5,10 @@
 2.实例化一个服务对象
 
   
-    host = "smtp.163.com"
-    sender = "chenqin_1990@163.com"
-    username = "chenqin_1990"
-    password = "12110010_wy"
+    host = "xxx.xxx.com"
+    sender = "xxx@xxx.com"
+    username = "username"
+    password = "password"
     
     s = server(host, sender, password, username)
   或者

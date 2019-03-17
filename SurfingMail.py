@@ -8,6 +8,37 @@ from email.mime.text import MIMEText
 
 
 class server:
+    """
+    用于实例化一个发邮件的服务器，并实现邮件发送。
+
+    详见： https://github.com/duxinn/surfing-mail
+
+    例如：
+    from SurfingMail import server
+
+    host = "xxx.com"
+    sender = "username@xxx.com"
+    username = "xxx"
+    password = "xxx"
+
+    s = server(host, sender, password, username)
+
+    或者
+
+    para_d = {
+        'host': host,
+        'sender': sender,
+        'password': password,
+        'username': '',
+        'port': 25,
+    }
+
+    s = server(**para_d)
+
+    s.sendmail('xxx@xx.com',subject='subject', contect='msg')
+
+    s.close()
+    """
     def __init__(self, host: str = None, sender: str = None, password: str = None,
                  username: str = None, port: int = 25,
                  **para_d):
@@ -50,7 +81,6 @@ class server:
               ', '.join([str(j) for j in kwargs.values()]))
 
     def send_mail(self, to, subject=None, content=None, cc=None, a=None, email_subtype='mixed', text_subtype='plain'):
-        # self._send_mail(to, subject, content, cc, a, email_subtype, text_subtype)
         try:
             self._send_mail(to, subject, content, cc, a, email_subtype, text_subtype)
         except smtplib.SMTPException as e:
