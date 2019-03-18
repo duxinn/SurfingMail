@@ -42,6 +42,22 @@ class server:
     def __init__(self, host: str = None, sender: str = None, password: str = None,
                  username: str = None, port: int = 25,
                  **para_d):
+        """
+
+        :param host: 服务器地址
+        :param sender: 发件人邮箱地址
+        :param password: 登录密码
+        :param username: 发件人昵称
+        :param port: 端口，默认25
+        :param para_d: para_d = {
+                            'host': host,
+                            'sender': sender,
+                            'password': password,
+                            'username': '',
+                            'port': 25,
+                            }
+                字典类型传参
+        """
         self.host = host if host else para_d.get('host')
         self.port = port if port else para_d.get('port', 25)
         self.sender = sender if sender else para_d.get('sender')
@@ -62,6 +78,10 @@ class server:
         self.login()
 
     def login(self):
+        """
+        登录服务器，实例化一个邮箱
+        :return: server对象
+        """
         try:
             self._server = smtplib.SMTP(self.host, self.port)
             self._server.ehlo()
@@ -73,6 +93,10 @@ class server:
             sys.exit('服务器认证失败')
 
     def close(self):
+        """
+        关闭和邮件服务器的连接
+        :return:
+        """
         self._server.close()
 
     def _print(self, e, *args, **kwargs):
@@ -81,6 +105,25 @@ class server:
               ', '.join([str(j) for j in kwargs.values()]))
 
     def send_mail(self, to, subject=None, content=None, cc=None, a=None, email_subtype='mixed', text_subtype='plain'):
+        """
+
+        :param to: 收件人，必须参数
+        to 和 cc 都支持传输多个收件人，支持列表、元组、字符串，比如
+        to = ['tom@xxx.com', 'lucy@xxx.com']
+        或者
+        to = ('tom@xxx.com', 'lucy@xxx.com')
+        或者
+        to = 'tom@xxx.com,lucy@xxx.com'
+        邮件格式不对会报TypeError错。
+        :param subject: （可选）主题，默认'未命名主题'
+        :param content: （可选）内容，默认'未命名内容'
+        :param cc:（可选） cc收件人，默认空
+
+        :param a: （可选） 附件，文件不存在会报FileNotFoundError
+        :param email_subtype: 邮件的类型，默认mixed， 可选'related','alternative'
+        :param text_subtype: 文本的类型，默认'plain', 可选'html'
+        :return: None
+        """
         try:
             self._send_mail(to, subject, content, cc, a, email_subtype, text_subtype)
         except smtplib.SMTPException as e:
@@ -98,12 +141,6 @@ class server:
 
     def _send_mail(self, to, subject=None, content=None, cc=None, a=None,
                    email_subtype='mixed', text_subtype='plain', **kwargs):
-        """
-        -to 接收人
-        -cc cc接收人
-        -subject subject
-        :return:
-        """
 
         subject = subject if subject else '未命名主题'
         content = content if content else '未命名内容'
